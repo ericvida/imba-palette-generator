@@ -102,14 +102,15 @@ tag color-card < div
 			<input[@color.hue[0]].color-number type="number" min="1" max="360" step="1">
 			<span.main-color style="{#context.bg(@color.hue[0] - @color.hue[1],@color.sat[0],@color.lit[5])}">
 				<h3> @color.name
-			for lightness, i in @color.lit
-				<span style="{#context.bg(@color.hue[0], @color.sat[0], lightness)}"> 
-					if i is 0
-						<p> "{@color.name}-black"
-					elif i is 10
-						<p> "{@color.name}-white"
-					else
-						<p> "{@color.name}-{i}00"
+			<div.card-swatches>
+				for lightness, i in @color.lit
+					<span style="{#context.bg(@color.hue[0], @color.sat[0], lightness)}"> 
+						if i is 0
+							<p style="color:hsl({@color.hue[0]},100%,80%);"> "{@color.name}-black"
+						elif i is 10
+							<p> "{@color.name}-white"
+						else
+							<p> "{@color.name}-{i}00"
 tag color-code < code
 	<self>
 			for lightness, i in @color.lit
@@ -133,31 +134,40 @@ html, body {
 .light-switch:hover {
 	background-color: hsl(265,80%,22%);
 }
+.cards.lightsOff {
+	background-color: hsl(265,80%,2%);
+}
 .cards {
 	display: flex;
+	justify-content: space-around;
+	align-items: start;
 	padding: 50px 10px;
 	background-color: hsl(265,80%,92%);
 	margin: 0;
-}
-main.lightsOff {
-	background-color: hsl(265,80%,2%);
+	flex-wrap: wrap;
+	flex-basis: auto;
+
 }
 .card {
 	flex: 0 1 calc(33% - 1.3em);
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	margin-bottom: 40px;
+}
+.card-swatches {
+	display: flex;
+	flex-direction: column-reverse;
 }
 .card span {
-	width: 200px;
+	width: 100%;
 	height: 50px;
 	border-radius: 0px;
 	display: flex;
-	align-items: center;
 	justify-content: center;
+	align-items: center;
 	}
 .card input {
-	width: 200px;
+	width: 100%;
 	padding: 10px;
 	background-color: #efefef;
 	border: 0;
@@ -166,12 +176,12 @@ main.lightsOff {
 	color: #2f2f2f;
 	font-weight: bold;
 }
+.card .main-color {
+	width: 100%;
+	height: 100px;
+}
 .dark {
 	color: white;
-}
-.card .main-color {
-	width: 200px;
-	height: 100px;
 }
 pre, code {
 	margin: 0;

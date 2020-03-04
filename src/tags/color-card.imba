@@ -17,22 +17,21 @@ tag color-card
 	def render
 		let shades = ColorShades.new @shadesnum
 		<self>
-			<input[@hue] type="range" min=0 max=360>
-			<input[@shadesnum] type="range" min=0 max=11>
+			<span> "{@hue} hue"
+			<input[@hue].slider type="range" min=0 max=360>
+			<span> "{@shadesnum + 1} shades"
+			<input[@shadesnum].slider type="range" min=2 max=11>
 			<div.color-preview style="background-color: hsl({@hue},80%,60%);">
 				<h1> "{@hue}"
 			<div.shade-container>
-				if @shadesnum > 1
-					<span.shade style="{bghsl(@hue,80,5)} {chsl(100,100,100)}"> "black"
-					
+				<span.shade style="{bghsl(@hue,80,5)} {chsl(100,100,100)}"> "black"
 				for shade in [...shades.shadeList]
 					if shade > 34
 						<span.shade style="{bghsl(@hue,80,shade)}"> shade
 					else
 						<span.shade style="{bghsl(@hue,80,shade)} {c("white")}"> shade
-				if @shadesnum > 1
-					<span.shade style="background-color: hsl({@hue},80%,97%);"> "white"
-
+				<span.shade style="background-color: hsl({@hue},80%,97%);"> "white"
+				
 ### css
 color-card {
 	flex-basis: 1fr;

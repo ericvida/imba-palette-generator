@@ -5,8 +5,10 @@
     "check-version": "imbac --version"
   },
   "dependencies": {
-    "imba": "^2.0.0-alpha.33",
-    "imba-rollup": "^1.0.4"
+    "global": "^4.4.0",
+    "imba": "^2.0.0-alpha.34",
+    "imba-rollup": "^2.0.0-alpha.31",
+    "vsce": "^1.73.0"
   },
   "devDependencies": {}
 }

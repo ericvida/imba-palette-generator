@@ -1,297 +1,113 @@
+import {bghsl,chsl,c} from './tags/utils.imba'
+let numOfColors = 9
+let numOfShades = 9
+class ColorCard
+	def constructor colorNum
+		@colorNum = colorNum
+		@hueList = []
+		@colorBuilder(colorNum)
+	def colorBuilder n
+		@weighted = 0
+		for i in [0...n]
+			if i isnt 0
+				@weighted += (360/@colorNum)
+				@weighted = Math.floor(@weighted)
+				@hueList.push(@weighted)
+			else
+				@hueList.push(0)
 
+# TODO: Make number of cards Dynamic
+# TODO: Make function default color value dynamic based on number of Cards.
 
-let lit = 			[2,12,22,42,52,62,72,92,98]
-let sat = 			[70,80,90,100]
-let satBrights = 	[90,95,98,100]
-let satDarks = 		[80,88,96,100]
-let litBrights = 	[2,12,22,32,42,49,60,70,78,86,95]
-let litDarks = 		[2,12,22,32,42,52,62,72,82,92,98]
+import './tags/color-card'
+import './tags/imba-credit'
+
 tag app-root
-	@theme = [
-		hue: [293,0,0,0,0,0]
-		name: "indigo"
-		sat: satDarks
-		lit: litDarks
-		---
-		hue: [339,0,0,0,0,0]
-		name: "pink"
-		sat: satDarks
-		lit: litDarks
-		---
-		hue: [8,0,0,0,0,0]
-		name: "red"
-		sat: satDarks
-		lit: litDarks
-		---
-		hue: [26,0,0,0,0,0]
-		name: "orange"
-		sat: satBrights
-		lit: litBrights
-		---
-		hue: [46,0,4,6,10,15]
-		name: "yellow"
-		sat: satBrights
-		lit: litBrights
-		---
-		hue: [81,0,0,0,0,0]
-		name: "green"
-		sat: satDarks
-		lit: litBrights
-		---
-		hue: [165,0,0,0,0,0]
-		name: "teal"
-		sat: satDarks
-		lit: litDarks
-		---
-		hue: [194,0,0,0,0,0]
-		name: "blue"
-		sat: satDarks
-		lit: litDarks
-		---
-		hue: [265,0,0,0,0,0]
-		name: "purple"
-		sat: satDarks
-		lit: litDarks
-	]
-	def bg hue, sat, val
-		return "background-color: hsl({hue}, {sat}%, {val}%);"
-	def turnOffLights
-		@lightsOff = !@lightsOff
-		console.log "Lights Off/On"
-	# Will return steps between lower and upper values
-	# Good for custom saturation of palettes.
-	# def lightness lower, upper, steps
-	# 	let diff = upper - lower # difference is 10
-	# 	let inc = diff / (steps) # steps are 5, of 2ea.
-	# 	for step in [lower .. upper] when lower < upper
-	# 		lower += inc
-
-	# Will return hue variation steps between middle and shadows
-	# for more color rich shadows.
-	def hue main, shadow, steps
-		let diff = main - shadow
-		let inc = diff / (steps)
-		for step in [main .. shadow] when shadow
-			main += inc
 	def render
-		<self>
-			<style>
-				'h1 {' 
-					"text-align: center;"
-					"padding: 2em;"
-					"font-weight: bold;"
-					"font-family: sans-serif;"
-					"text-transform: uppercase;"
-					"color: hsl({@theme[0].hue[0]},{sat[3]}%,{lit[4]}%	);"
-				'}'
-			<h1.light-switch  :click.@turnOffLights()> "Imba Color Theme Generator"
-			<main.cards.lightsOff=@lightsOff>
-				for item in @theme
-					<color-card color=item>
-			<section.results>
-				<pre>
-					<code>
-						':root {'
-						for item in @theme
-							<color-code color=item>
-						'}'
+		let colors = ColorCard.new numOfColors
+		<self.main>
+			<aside>
+				<h3> "Global Settings"
+				<div.controls-group>
+					<span> "{numOfColors} colors"
+					<input[numOfColors].slider type="range" min=1 max=9> 
+				<div.controls-group>
+					<span> "{numOfShades+1} shades"
+					<input[numOfShades].slider type="range" min=0 max=10 step=2> 
+				<imba-credit>
+			<section.card-container>
+				
+				for card in [0...colors.colorNum]
+					<color-card hue="{colors.hueList[card]}" shadesnum=numOfShades>
 					
-tag color-card < div
-	def render
-		<self.card>
-			<input[@color.hue[0]].color-number type="number" min="1" max="360" step="1">
-			<span.main-color style="{#context.bg(@color.hue[0] - @color.hue[1],@color.sat[0],@color.lit[5])}">
-				<h3> @color.name
-			<div.card-swatches>
-				for lightness, i in @color.lit
-					<span style="{#context.bg(@color.hue[0], @color.sat[0], lightness)}"> 
-						if i is 0
-							<p style="color:hsl({@color.hue[0]},100%,80%);"> "{@color.name}-black"
-						elif i is 10
-							<p> "{@color.name}-white"
-						else
-							<p> "{@color.name}-{i}00"
-tag color-code < code
-	<self>
-			for lightness, i in @color.lit
-				if i is 0
-					<p> "--{@color.name}-black: hsl({@color.hue[0]},{@color.sat[0]}%,{lightness}%)"
-				elif i is 10
-					<p> "--{@color.name}-white: hsl({@color.hue[0]},{@color.sat[0]}%,{lightness}%)"
-				else
-					<p> "--{@color.name}-{i}00: hsl({@color.hue[0]},{@color.sat[0]}%,{lightness}%)"
 
-### css scoped
-html, body {
+
+
+
+### css	
+body {
+	background-color: #efefef;
 	padding: 0;
 	margin: 0;
 }
-
-.light-switch {
-	background-color: hsl(265,80%,12%);
-	cursor: pointer;
-}
-.light-switch:hover {
-	background-color: hsl(265,80%,22%);
-}
-.cards.lightsOff {
-	background-color: hsl(265,80%,2%);
-}
-.cards {
+.main {
 	display: flex;
-	justify-content: space-around;
-	align-items: start;
-	padding: 50px 10px;
-	background-color: hsl(265,80%,92%);
-	margin: 0;
-	flex-wrap: wrap;
-	flex-basis: auto;
-
+}	
+aside {
+	flex: 0 0 150px;
+	padding: 0 20px;
+	background-color: white;
+	min-height: 100vh;
+	position: relative;
 }
-.card {
-	flex: 0 1 calc(33% - 1.3em);
+.controls-group {
+	margin: 0 auto;
 	display: flex;
 	flex-direction: column;
-	margin-bottom: 40px;
-}
-.card-swatches {
-	display: flex;
-	flex-direction: column-reverse;
-}
-.card span {
-	width: 100%;
-	height: 50px;
-	border-radius: 0px;
-	display: flex;
 	justify-content: center;
-	align-items: center;
-	}
-.card input {
-	width: 100%;
-	padding: 10px;
+}
+.card-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	align-content: flex-start;
 	background-color: #efefef;
-	border: 0;
-	text-align: center;
-	font-size: 2em;
-	color: #2f2f2f;
-	font-weight: bold;
+	padding: 10px;
+	flex-grow: 1;
 }
-.card .main-color {
+
+
+###
+
+### css
+.slider {
+	margin: 10px 0 20px;
+	-webkit-appearance: none;
 	width: 100%;
-	height: 100px;
-}
-.dark {
-	color: white;
-}
-pre, code {
-	margin: 0;
-}
-code {
-	background-color: hsl(265,80%,12%);
-	color: hsl(265,80%,92%);
-	padding: 40px;
-	display: block;
-}
-###
-
-# Input Number Styles
-### css
-.color-number {
-  position: relative;
+	height: 15px;
+	border-radius: 5px;  
+	background: #d3d3d3;
+	outline: none;
+	opacity: 0.7;
+	-webkit-transition: .2s;
+	transition: opacity .2s;
 }
 
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button
-{
-  -webkit-appearance: none;
-  margin: 0;
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 25px;
+	height: 25px;
+	border-radius: 50%; 
+	background: hsla(251,90%,64%,1);
+	cursor: pointer;
 }
 
-input[type=number]
-{
-  -moz-appearance: textfield;
-}
-
-.color-number input {
-  width: 45px;
-  height: 42px;
-  line-height: 1.65;
-  float: left;
-  display: block;
-  padding: 0;
-  margin: 0;
-  padding-left: 20px;
-  border: 1px solid #eee;
-}
-
-.color-number input:focus {
-  outline: 0;
-}
-
-.color-number-nav {
-  float: left;
-  position: relative;
-  height: 42px;
-}
-
-.color-number-button {
-  position: relative;
-  cursor: pointer;
-  border-left: 1px solid #eee;
-  width: 20px;
-  text-align: center;
-  color: #333;
-  font-size: 13px;
-  font-family: "Trebuchet MS", Helvetica, sans-serif !important;
-  line-height: 1.7;
-  -webkit-transform: translateX(-100%);
-  transform: translateX(-100%);
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-}
-
-.color-number-button.color-number-up {
-  position: absolute;
-  height: 50%;
-  top: 0;
-  border-bottom: 1px solid #eee;
-}
-
-.color-number-button.color-number-down {
-  position: absolute;
-  bottom: -1px;
-  height: 50%;
-}
-###
-
-
-
-# CSS RESET
-### css
-html {
-  box-sizing: border-box;
-  font-size: 16px;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-body, h1, h2, h3, h4, h5, h6, p, ol, ul {
-  margin: 0;
-  padding: 0;
-  font-weight: normal;
-}
-
-ol, ul {
-  list-style: none;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
+.slider::-moz-range-thumb {
+	width: 25px;
+	height: 25px;
+	border-radius: 50%;
+	background: hsla(251,90%,64%,1);
+	cursor: pointer;
 }
 ###

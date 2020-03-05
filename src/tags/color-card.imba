@@ -21,7 +21,7 @@ tag color-card
 			<input[@hue].slider type="range" min=0 max=360>
 			<span> "{@shadesnum + 1} shades"
 			<input[@shadesnum].slider type="range" min=2 max=11>
-			<div.color-preview style="background-color: hsl({@hue},80%,60%);">
+			<div.color-preview style="background-color: hsl({@hue},100%,60%);">
 				<h1> "{@hue}"
 			<div.shade-container>
 				if @bw

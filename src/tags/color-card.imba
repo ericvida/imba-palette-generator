@@ -24,13 +24,15 @@ tag color-card
 			<div.color-preview style="background-color: hsl({@hue},80%,60%);">
 				<h1> "{@hue}"
 			<div.shade-container>
-				<span.shade style="{bghsl(@hue,80,5)} {chsl(100,100,100)}"> "black"
+				if @bw
+					<span.shade style="{bghsl(@hue,80,5)} {chsl(100,100,100)}"> "black"
 				for shade in [...shades.shadeList]
 					if shade > 34
 						<span.shade style="{bghsl(@hue,80,shade)}"> shade
 					else
 						<span.shade style="{bghsl(@hue,80,shade)} {c("white")}"> shade
-				<span.shade style="background-color: hsl({@hue},80%,97%);"> "white"
+				if @bw
+					<span.shade style="background-color: hsl({@hue},80%,97%);"> "white"
 				
 ### css
 color-card {

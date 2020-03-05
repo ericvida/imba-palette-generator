@@ -7,7 +7,7 @@ class ColorCard
 		@hueList = []
 		@colorBuilder(colorNum)
 	def colorBuilder n
-		@weighted = 0
+		@weighted = 80
 		for i in [0...n]
 			if i isnt 0
 				@weighted += (360/@colorNum)
@@ -21,8 +21,10 @@ class ColorCard
 
 import './tags/color-card'
 import './tags/imba-credit'
-
 tag app-root
+	@blackWhite = true
+	def toggleBW
+		@blackWhite = !@blackWhite
 	def render
 		let colors = ColorCard.new numOfColors
 		<self.main>
@@ -33,12 +35,12 @@ tag app-root
 					<input[numOfColors].slider type="range" min=1 max=9> 
 				<div.controls-group>
 					<span> "{numOfShades+1} shades"
-					<input[numOfShades].slider type="range" min=0 max=10 step=2> 
+					<input[numOfShades].slider type="range" min=2 max=10 step=2> 
+				<button.bw-toggle :click.toggleBW()> "Toggle Black & White"
 				<imba-credit>
 			<section.card-container>
-				
 				for card in [0...colors.colorNum]
-					<color-card hue="{colors.hueList[card]}" shadesnum=numOfShades>
+					<color-card hue="{colors.hueList[card]}" shadesnum=numOfShades bw=@blackWhite>
 					
 
 
@@ -75,7 +77,28 @@ aside {
 	padding: 10px;
 	flex-grow: 1;
 }
+.bw-toggle {
+	width: 100%;
+	padding: 10px;
+	border: none;
+	border-radius: 5px;
+	font-weight: bold;
+	background-color: hsl(240,100%,86%);
+	border-bottom: 4px solid hsl(240,70%,76%);
+	transform: translateY(0px);
+}
+.bw-toggle:hover {
+	background-color: hsl(240,100%,90%);
+	border-bottom: 6px solid hsl(240,70%,80%);
+	transform: translateY(-2px);
+}
+.bw-toggle:active {
+	background-color: hsl(240,100%,86%);
+	border-bottom: 0;
+	border-top: 6px solid hsl(240,70%,76%);
+	transform: translateY(-2px);
 
+}
 
 ###
 
@@ -99,7 +122,7 @@ aside {
 	width: 25px;
 	height: 25px;
 	border-radius: 50%; 
-	background: hsla(251,90%,64%,1);
+	background: hsla(240,90%,64%,1);
 	cursor: pointer;
 }
 
@@ -107,7 +130,7 @@ aside {
 	width: 25px;
 	height: 25px;
 	border-radius: 50%;
-	background: hsla(251,90%,64%,1);
+	background: hsla(240,90%,64%,1);
 	cursor: pointer;
 }
 ###

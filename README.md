@@ -1,6 +1,6 @@
 # Color Palette Generator
 [![Netlify Status](https://api.netlify.com/api/v1/badges/94d3d5cc-a2fd-41c5-8f1c-4193648c7888/deploy-status)](https://app.netlify.com/sites/color-pallete-generator/deploys)
-
+[![Run on Repl.it](https://repl.it/badge/github/iamtirado/imba-palette-generator)](https://repl.it/github/iamtirado/imba-palette-generator)
 Coded with Imba
 
 Download / Clone the repo, then...

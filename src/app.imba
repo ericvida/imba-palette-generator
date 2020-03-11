@@ -170,7 +170,7 @@ tag app-root
 		# let colors = ColorCard.new numOfColors
 		<self.main>
 			<aside>
-				<h3> "Eric's Color Themer"
+				<h3> "Eric's Theme Generator"
 				<div.controls-group>
 					<span> "{state.gBaseHue} Base Hue"
 					<input[state.gBaseHue].slider type="range" min=1 max=360> 

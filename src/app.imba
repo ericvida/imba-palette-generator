@@ -170,7 +170,6 @@ tag app-root
 		# let colors = ColorCard.new numOfColors
 		<self.main>
 			<aside>
-				console.log colors.midStep()
 				<h3> "Eric's Color Themer"
 				<div.controls-group>
 					<span> "{state.gBaseHue} Base Hue"

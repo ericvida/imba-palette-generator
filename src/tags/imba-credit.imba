@@ -1,6 +1,8 @@
 tag imba-credit
 	<self>
-		<a href="https://github.com/imba/template" target="_blank"> "Created with Imba"
+		<a href="https://github.com/imba/template" target="_blank"> "Created with Imba "
+		<br>
+		<a href="https://github.com/iamtirado"> "by Eric"
 
 ### css
 imba-credit {
@@ -17,6 +19,7 @@ imba-credit a {
 	font-weight: bold;
 	color: hsla(251,90%,64%,1);
 	border-bottom: 4px solid hsla(251,90%,75%,.4);
+	line-height: 2em;
 }
 imba-credit a:hover{
 	border-bottom: 4px solid hsla(251,90%,75%,1);

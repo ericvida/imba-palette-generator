@@ -170,7 +170,7 @@ tag app-root
 		# let colors = ColorCard.new numOfColors
 		<self.main>
 			<aside>
-				<h3> "Eric's Theme Generator"
+				<h3> "Imba Theme Generator"
 				<div.controls-group>
 					<span> "{state.gBaseHue} Base Hue"
 					<input[state.gBaseHue].slider type="range" min=1 max=360> 
@@ -221,11 +221,12 @@ aside {
 	background-color: white;
 	min-height: 100vh;
 	position: relative;
-	font-size: .6em;
+	font-size: .6rem;
 }
 aside h3 {
 	font-family: 'Titillium Web', sans-serif;
 	font-weight: bold;
+	font-size: .9rem;
 }
 .controls-group {
 	margin: 0 auto;

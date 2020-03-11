@@ -190,7 +190,7 @@ tag app-root
 					<span> "light saturation {state.gSatLight}"
 					<input[state.gSatLight].slider type="range" min=50 max=100 step=1>
 				<div.controls-group>
-					<span> "lightness darkest {state.gLitDark}"
+					<span> "dark lightness {state.gLitDark}"
 					<input[state.gLitDark].slider type="range" min=0 max=50 step=1>
 				<div.controls-group>
 					<span> "median lightness {state.gLit}"

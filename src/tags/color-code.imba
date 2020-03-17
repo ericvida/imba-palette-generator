@@ -33,43 +33,33 @@ import {bg,bghsl, chsl, c} from './utils.imba'
 # 						<span.shade style="{bghsl(@hue,80,shade)} {c("white")}"> shade
 # 				if @bw
 # 					<span.shade style="background-color: hsl({@hue},80%,97%);"> "white"
-tag color-card
+tag color-code
+	@hue = @hues[@index]
+	@colorName = "color {@index}"
+	def copy
+		console.log "copy"
 	def render
-		<self>
-			<div.color-preview style="background-color: hsl({@hue},{@gsat}%,{@glit}%);"> 
-				<b> @hue+"°"
-			# TODO: Add support for slider to tweak color of each card.
-			# <input[@hue].slider type="range" min=glit max=100 step=1>
-			<div.shades>
-				for hsl,i in @hslarray.reverse()
-					<span.shade style="background-color:{hsl}; color: hsl({@hue},{@gsat}%,8%);"> 
-						<b> "{hsl}"
-### css				
-color-card {
-	background-color: #fff;
-	border-radius: 5px;
-	padding: 10px;
-	height: auto;
-	text-align: center;
-}
-color-card input {
+		<self style="background-color: hsl({@hues[@index]},{@gsat}%,{@glit}%);">
+			<input[@colorName]> @colorName
+			# TODO: Make button to copy color code
+			<button :click.copy()> "copy"
+			<code>
+			for hsl,i in @hslarray.reverse()
+				<p> "--{@colorName}-{i}00:{hsl};"
+### css			
+color-code {
+	background-color: #0f0f0f;
+	display: block;
 	width: 100%;
+	padding: 1rem;
 }
-.color-preview {
-	padding: 20px 0;
-	text-align: center;
-	border-radius: 5px 5px 0 0;
+h3 {
+	color: white;
+	margin: 0;
+	padding: 0;
 }
-.shades {
-	display: flex;
-	flex-direction: column;
-}
-.shades span.shade {
-	padding: 5px;
-	text-align: center;
-}
-.shades span:last-child {
-	border-radius: 0 0 5px 5px;
-	color: #5f5f5f;
+p {
+	color: white;
+	margin: 0;
 }
 ###

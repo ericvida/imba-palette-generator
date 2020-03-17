@@ -8,6 +8,7 @@ let state =
 	gLitDark: 10
 	gLit: 50
 	gLitLight: 90
+	gHueArray: []
 # class ColorCards
 # 	def constructor colorNum
 # 		@colorNum = colorNum
@@ -42,18 +43,22 @@ class Color
 		@calcSat()
 		@calcLit()
 		@calcHue()
+		@calcHsl()
 		@collectHsl()
 	def calcHue
 		# initial hue array
 		@hueArray = []
 		# figure out step size between lowest hue and highest hue.
 		@hueStepSize = (360/@colorNum)
-		# push @hueStepSize to @satArray for each time in array.
-		@hueArray.push(@hue)
-		# push from 
+		# create hue Increment variable and set initial value to @hue
+		let hueIncrement = @hue
+		# push initial value to @hueArray
+		@hueArray.push(hueIncrement)
+		# push @hueStepSize to @hueArray for each time in array.
 		for step,i in (@colorNumArray)
-			@hueArray.push(Math.floor(@hue += @hueStepSize))
+			@hueArray.push(Math.floor(hueIncrement += @hueStepSize))
 		# console.log "hue steps: " + @hueArray
+		state.gHueArray = @hueArray
 	def calcLit
 		# initial saturation Array
 		@litArray = []
@@ -67,27 +72,28 @@ class Color
 		# figure out step size between low and mid
 		@litLowStepSize = ((@lit-@litDark)/@litStepsBetween)
 		@litHighStepSize = ((@litLight-@lit)/@litStepsBetween)
-		# push @litStepSize to @litArray for each time in array.
-		let litIncrement = @litDark
-		# push lowest value if less than 2 steps
+		# call litStep variable and set starting point to litDark val
+		let litStep = @litDark
+		# push default litStep value if less than 2 steps
 		if @stepNum > 2
-			@litArray.push(litIncrement)
+			@litArray.push(litStep)
 
 		# for each steps between lowest and highest
 		for step in @litStepsBetweenArray
+			# if step is not the mid step of shades array.
 			if @litIncrement isnt @midStep(@stepNum)
 				# push val + low step size
-				@litArray.push(Math.round(litIncrement += @litLowStepSize))
+				@litArray.push(Math.round(litStep += @litLowStepSize))
 			# push middle value always
 			if @stepNum is @midStep(@stepNum)
 				@litArray.push(@lit)
 			# for each step between low/mid/high
 			if @litIncrement isnt @midStep(@stepNum)
-				@litArray.push(Math.round(litIncrement += @litHighStepSize))
+				@litArray.push(Math.round(litStep += @litHighStepSize))
 		# push highest value if more than 2 steps
 		if @stepNum > 2
-			@litArray.push(Math.round(litIncrement += @litHighStepSize))
-			@litArray.push(Math.round(litIncrement += @litHighStepSize))
+			@litArray.push(Math.round(litStep += @litHighStepSize))
+			@litArray.push(Math.round(litStep += @litHighStepSize))
 		# console.log "lightness array: " + @litArray
 
 	def calcSat
@@ -124,6 +130,7 @@ class Color
 			@satArray.push(Math.round(@satLight))
 		# console.log "saturation array: " + @satArray
 	
+	# // TODO: make hslArray customizable from the card.
 	def calcHsl v
 		# create hsl Array
 		@hslArray = []
@@ -132,19 +139,23 @@ class Color
 			# push hsl string
 			@hslArray.push("hsl({@hueArray[v]},{@satArray[i]}%,{@litArray[i]}%)")
 		return @hslArray
-
 	def collectHsl
 		# create collection array
 		@hslCollection = []
 		# for each number of Colors
 		for card,i in @colorNumArray
-			# add hslArray to collection
-			@hslCollection.push(@calcHsl(card))
+			# add hslArray to collectionArray
+			@hslCollection.push(calcHsl(card))
 		# console.log @hslCollection
+	# is value odd
 	def isOdd num
+		# returns true or false
 		return num % 2
+	# is num larger than two
 	def isBiggerThanTwo num
+		# return true or false
 		return num > 2
+	# return
 	def midStep
 		if @isOdd(@stepNum)
 			"It's Odd"
@@ -154,11 +165,8 @@ class Color
 			return Math.floor(@stepNum/2)+1
 		else
 			return 1
-
-
-# TODO: Make number of cards Dynamic
-# TODO: Make function default color value dynamic based on number of Cards.
 import './tags/color-card'
+import './tags/color-code'
 import './tags/imba-credit'
 tag app-root
 	@blackWhite = true
@@ -171,38 +179,51 @@ tag app-root
 		<self.main>
 			<aside>
 				<h3> "Imba Theme Generator"
-				<div.controls-group>
-					<span> "{state.gBaseHue} Base Hue"
-					<input[state.gBaseHue].slider type="range" min=1 max=360> 
-				<div.controls-group>
-					<span> "{state.gColorNum} colors"
-					<input[state.gColorNum].slider type="range" min=1 max=15> 
-				<div.controls-group>
-					<span> "{state.gStepNum} color steps"
-					<input[state.gStepNum].slider type="range" min=3 max=11 step=2> 
-				<div.controls-group>
-					<span> "dark saturation {state.gSatDark} "
-					<input[state.gSatDark].slider type="range" min=0 max=100 step=1>
-				<div.controls-group>
-					<span> "median saturation {state.gSat}"
-					<input[state.gSat].slider type="range" min=0 max=100 step=1>
-				<div.controls-group>
-					<span> "light saturation {state.gSatLight}"
-					<input[state.gSatLight].slider type="range" min=50 max=100 step=1>
-				<div.controls-group>
-					<span> "dark lightness {state.gLitDark}"
-					<input[state.gLitDark].slider type="range" min=0 max=50 step=1>
-				<div.controls-group>
-					<span> "median lightness {state.gLit}"
-					<input[state.gLit].slider type="range" min=0 max=100 step=1>
-				<div.controls-group>
-					<span> "light lightness {state.gLitLight}"
-					<input[state.gLitLight].slider type="range" min=5 max=50 step=1>
-				# <button.bw-toggle :click.toggleBW()> "Toggle Black & White"
+				<div.control>
+					<span> "number of colors "
+					<span> "{state.gColorNum}"
+				<input[state.gColorNum].slider type="range" min=1 max=15> 
+				<div.control>
+					<span> "First Hue's Value "
+					<span> "{state.gBaseHue}°"
+				<input[state.gBaseHue].slider type="range" min=1 max=360> 
+				<div.control>
+					<span> "Number of shades "
+					<span> "{state.gStepNum}"
+				<input[state.gStepNum].slider type="range" min=3 max=11 step=2> 
+				<div.control>
+					<span> "saturation of brights "
+					<span> "{state.gSatLight}%"
+				<input[state.gSatLight].slider type="range" min=0 max=100 step=1>
+				<div.control>
+					<span> "saturation of middle "
+					<span> "{state.gSat}%"
+				<input[state.gSat].slider type="range" min=0 max=100 step=1>
+				<div.control>
+					<span> "saturation of darks "
+					<span> "{state.gSatDark}%"
+				<input[state.gSatDark].slider type="range" min=0 max=100 step=1>
+				<div.control>
+					<span> "brightness of brights "
+					<span> "{state.gLitLight}%"
+				<input[state.gLitLight].slider type="range" min=state.gLit max=100 step=1>
+				<div.control>
+					<span> "brightness of middle "
+					<span> "{state.gLit}%"
+				<input[state.gLit].slider type="range" min=state.gLitDark max=state.gLitLight step=1>
+				<div.control>
+					<span> "brightness of darks "
+					<span> "{state.gLitDark}%"
+				<input[state.gLitDark].slider type="range" min=0 max=state.gLit step=1>
+				<button.bw-toggle :click.toggleBW()> "Toggle Black & White"
 				<imba-credit>
-			<section.card-container>
-				for hslArray,i in colors.hslCollection
-					<color-card bind:colors=colors bind:i=i bind:steps=colors.stepNum hues=colors.hueArray bind:sats=colors.satArray bind:lits=colors.litArray hsl=hslArray bind:bw=@blackWhite>
+			<main>
+				<section.card-container>
+					for hslArray,i in colors.hslCollection
+						<color-card i=i hues=colors.hueArray hue=state.gHueArray[i] hslarray=hslArray gsat=state.gSat glit=state.gLit gsatdark=state.gSatDark>
+				# <section.code-container>
+				# 	for hslArray,index in colors.hslCollection
+				# 		<color-code index=index hues=colors.hueArray hue=state.gHueArray[i] hslarray=hslArray gsat=state.gSat glit=state.gLit>
 ### css
 @import url('https://fonts.googleapis.com/css?family=Open+Sans|Titillium+Web:700&display=swap');
 body {
@@ -211,10 +232,9 @@ body {
 	margin: 0;
 	font-family: 'Open Sans', sans-serif;
 }
-.main {
+app-root {
 	display: flex;
 }
-
 aside {
 	flex: 0 0 150px;
 	padding: 0 20px;
@@ -228,20 +248,26 @@ aside h3 {
 	font-weight: bold;
 	font-size: .9rem;
 }
-.controls-group {
+main {
+	flex: 1 1 auto;
+}
+.control {
 	margin: 0 auto;
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	flex-direction: row;
+	justify-content: space-between;
 }
 .card-container {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-around;
-	align-content: flex-start;
+	display: grid;
+	gap: 1rem;
+	padding: 20px;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	height: max-content;
 	background-color: #efefef;
-	padding: 10px;
-	flex-grow: 1;
+}
+.code-container {
+	display: block;
+	width: 100%;
 }
 .bw-toggle {
 	width: 100%;
@@ -276,7 +302,7 @@ aside h3 {
 	height: 15px;
 	border-radius: 5px;  
 	background: #d3d3d3;
-	outline: none;
+	outline: none; 
 	opacity: 0.7;
 	-webkit-transition: .2s;
 	transition: opacity .2s;

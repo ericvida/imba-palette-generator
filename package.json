@@ -6,7 +6,7 @@
   },
   "dependencies": {
     "global": "^4.4.0",
-    "imba": "^2.0.0-alpha.34",
+    "imba": "^2.0.0-alpha.35",
     "imba-rollup": "^2.0.0-alpha.31",
     "vsce": "^1.73.0"
   },

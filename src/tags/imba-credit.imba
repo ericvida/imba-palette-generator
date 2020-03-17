@@ -6,12 +6,9 @@ tag imba-credit
 
 ### css
 imba-credit {
-	position: fixed;
 	left: 0;
-	bottom: 20px;
-	padding-left: 20px;
 	display: block;
-	width: 150px;
+	width: 100%;
 }
 imba-credit a {
 	text-decoration: none;

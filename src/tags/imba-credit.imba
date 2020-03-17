@@ -1,6 +1,6 @@
 tag imba-credit
 	<self>
-		<a href="https://github.com/imba/template" target="_blank"> "Created with Imba "
+		<a href="https://github.com/imba/template" target="_blank"> "Created with Imba 2"
 		<br>
 		<a href="https://github.com/iamtirado/imba-palette-generator" target="_blank"> "by Eric"
 

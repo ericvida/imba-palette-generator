@@ -215,7 +215,7 @@ tag app-root
 					<span> "brightness of darks "
 					<span> "{state.gLitDark}%"
 				<input[state.gLitDark].slider type="range" min=0 max=state.gLit step=1>
-				<button.bw-toggle :click.toggleBW()> "Toggle Black & White"
+				# <button.bw-toggle :click.toggleBW()> "Toggle Black & White"
 				<imba-credit>
 			<main>
 				<section.card-container>

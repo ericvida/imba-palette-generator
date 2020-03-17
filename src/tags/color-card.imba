@@ -42,8 +42,7 @@ tag color-card
 			# <input[@hue].slider type="range" min=glit max=100 step=1>
 			<div.shades>
 				for hsl,i in @hslarray.reverse()
-					<span.shade style="background-color:{hsl}; color: hsl({@hue},{@gsat}%,8%);"> 
-						<b> "{hsl}"
+					<span.shade style="background-color:{hsl}; color: hsl({@hue},{@gsat}%,8%);"> "{hsl}"
 ### css				
 color-card {
 	background-color: #fff;
